@@ -1,423 +1,232 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>華碩 2357 完整七步分析報告 | 2026-03-28</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#000;--c:rgba(255,255,255,.07);--c2:rgba(255,255,255,.10);--txt:#f5f5f7;--m:rgba(245,245,247,.52);--blue:#2997ff;--g:#30d158;--o:#ff9f0a;--r:#ff453a;--bd:rgba(255,255,255,.10)}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;line-height:1.6}
-.page{min-height:100vh;padding:56px 48px;position:relative;overflow:hidden}
-.page>*{position:relative;z-index:1}
-.pg{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
-.container{max-width:900px;margin:0 auto}
-.pn{width:44px;height:44px;border-radius:12px;background:var(--c);border:1px solid rgba(41,151,255,.25);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--blue);flex-shrink:0}
-.ph{display:flex;align-items:center;gap:18px;margin-bottom:32px;padding-bottom:18px;border-bottom:1px solid var(--bd)}
-.ey{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);font-weight:600;margin-bottom:4px}
-.ph h2{font-size:26px;font-weight:700}
-.ph_rt{margin-left:auto}
-.tk{display:inline-block;background:var(--c);border:1px solid var(--bd);border-radius:18px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--blue)}
-.card{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:12px}
-.card p{font-size:13px;line-height:1.8;color:var(--m);margin-bottom:8px}
-.card p:last-child{margin-bottom:0}
-.card strong{color:var(--txt)}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{text-align:left;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--bd);font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--m);font-weight:600}
-.tbl th:last-child,.tbl td:last-child{text-align:right}
-.tbl td{padding:10px 14px;border-bottom:1px solid var(--bd);color:var(--m)}
-.tbl tr:last-child td{border-bottom:none}
-.tbl .g{color:var(--g);font-weight:700}.tbl .r{color:var(--r);font-weight:700}.tbl .o{color:var(--o);font-weight:700}.tbl .n{font-variant-numeric:tabular-nums}
-.bl{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
-.bl li{font-size:13px;line-height:1.7;padding:12px 14px 12px 36px;background:var(--c);border:1px solid var(--bd);border-radius:12px;color:var(--m);position:relative}
-.bl li::before{content:'◆';position:absolute;left:14px;top:12px;color:var(--blue);font-size:8px}
-.bl li strong{color:var(--txt)}.bl li em{font-style:normal;color:var(--blue)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.pf{margin-top:36px;padding-top:16px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;font-size:11px;color:var(--m)}
-.cvr{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:100vh;padding:60px 48px;background:var(--bg);background-image:radial-gradient(ellipse at 30% 30%,rgba(41,151,255,.18) 0%,transparent 55%),radial-gradient(ellipse at 70% 70%,rgba(48,209,88,.10) 0%,transparent 55%)}
-.cvr_logo{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:28px}
-.cvr h1{font-size:72px;font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:14px}
-.cvr h1 span{color:var(--blue)}
-.cvr_sub{font-size:20px;color:var(--m);margin-bottom:40px}
-.cvr_meta{display:grid;grid-template-columns:repeat(3,auto);gap:28px;font-size:13px;color:var(--m);margin-bottom:48px}
-.cvr_meta strong{color:var(--txt);font-size:15px;display:block;margin-top:4px}
-.cvr_pages{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:48px}
-.tag{background:var(--c);border:1px solid var(--bd);border-radius:18px;padding:5px 12px;font-size:11px;color:var(--m)}
-.div{width:56px;height:4px;background:var(--blue);border-radius:2px;margin:0 auto 28px}
-.cvr_ft{font-size:11px;color:var(--m);border-top:1px solid var(--bd);padding-top:20px;width:100%;text-align:center;line-height:1.8}
-.p2{background-image:radial-gradient(ellipse at 15% 20%,rgba(41,151,255,.10) 0%,transparent 50%)}
-.p3{background-image:radial-gradient(ellipse at 80% 10%,rgba(48,209,88,.08) 0%,transparent 50%)}
-.p4{background-image:radial-gradient(ellipse at 20% 80%,rgba(41,151,255,.10) 0%,transparent 50%)}
-.p5{background-image:radial-gradient(ellipse at 60% 20%,rgba(255,159,10,.08) 0%,transparent 50%)}
-.p6{background-image:radial-gradient(ellipse at 40% 50%,rgba(41,151,255,.08) 0%,transparent 55%)}
-.p7{background-image:radial-gradient(ellipse at 50% 0%,rgba(41,151,255,.12) 0%,transparent 55%)}
-.sf{display:flex;align-items:center;gap:10px;overflow-x:auto;background:var(--c);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}
-.fs{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
-.fi{width:36px;height:36px;border-radius:10px;background:rgba(41,151,255,.15);border:1px solid rgba(41,151,255,.3);display:flex;align-items:center;justify-content:center;font-size:14px}
-.fl{font-size:10px;color:var(--m);text-align:center;max-width:64px;line-height:1.3}
-.fa{font-size:15px;color:var(--m);flex-shrink:0}
-.da{background:var(--c);border:1px solid var(--bd);border-radius:12px;padding:12px;text-align:center}
-.da_l{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--m);margin-bottom:6px}
-.da_v{font-size:20px;font-weight:700}
-.da_s{font-size:10px;color:var(--m);margin-top:3px}
-.sm_w{margin-bottom:12px}
-.sm_t{font-size:10px;font-weight:700;color:var(--m);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
-.sm{width:100%;border-collapse:collapse;font-size:12px}
-.sm th{padding:8px 10px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--bd);font-size:10px;text-transform:uppercase;color:var(--m);font-weight:600}
-.sm td{padding:8px 10px;border-bottom:1px solid var(--bd);text-align:center;color:var(--m)}
-.sm tr:last-child td{border-bottom:none}
-.sm .bc{color:var(--g);font-weight:700;background:rgba(48,209,88,.05)}
-.vs{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:20px}
-.vs_win{border-color:rgba(48,209,88,.3)}
-.vs_n{font-size:18px;font-weight:700;margin-bottom:4px}
-.vs_t{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:12px}
-.vm{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px}
-.vm_l{color:var(--m)}.vm_v{font-weight:600}
-.vsd{display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--m);align-self:center}
-.vh{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-bottom:12px}
-.eh{background:var(--c);border:1px solid var(--bd);border-radius:12px;padding:14px;text-align:center}
-.eh_l{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--m);margin-bottom:6px}
-.eh_v{font-size:24px;font-weight:700}
-.eh_s{font-size:10px;color:var(--m);margin-top:3px}
-.op_h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--bd)}
-.op_c{font-size:32px;font-weight:800;margin-bottom:5px}
-.op_t{font-size:12px;color:var(--blue);font-weight:600}
-.op_rt{text-align:right}
-.op_pr{font-size:40px;font-weight:800}
-.op_r{display:inline-block;background:rgba(255,159,10,.12);border:1px solid rgba(255,159,10,.35);border-radius:18px;padding:5px 12px;font-size:11px;font-weight:700;color:var(--o);margin-top:7px}
-.ok{background:var(--c);border:1px solid var(--bd);border-radius:12px;padding:12px;text-align:center}
-.ok_v{font-size:16px;font-weight:700;margin-bottom:4px}
-.ok_l{font-size:9px;text-transform:uppercase;letter-spacing:.5px;color:var(--m)}
-.ic_bl{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-bottom:18px}
-.ic_cf{font-size:9px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);font-weight:700;margin-bottom:10px}
-.ic_bl h2{font-size:24px;font-weight:700;margin-bottom:5px}
-.ic_sub{font-size:12px;color:var(--m);margin-bottom:16px}
-.ic_meta{display:flex;gap:18px;font-size:11px;color:var(--m);flex-wrap:wrap}
-.ic_meta strong{color:var(--txt)}
-.vrd{background:linear-gradient(135deg,rgba(41,151,255,.10) 0%,rgba(48,209,88,.06) 100%);border:1px solid rgba(41,151,255,.25);border-radius:16px;padding:20px}
-.vrd h3{font-size:13px;font-weight:700;margin-bottom:10px}
-.vi{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px;line-height:1.7;color:var(--m)}
-.vi:last-child{border-bottom:none;padding-bottom:0}
-.vi strong{color:var(--txt)}
-.tg{display:inline-block;background:rgba(255,255,255,.06);border-radius:5px;padding:2px 6px;font-size:10px;font-weight:600;margin-left:5px}
-.tg_g{color:var(--g)}.tg_o{color:var(--o)}.tg_r{color:var(--r)}
-.cr_bl{background:var(--c);border:1px solid var(--bd);border-radius:16px;padding:20px;margin-top:18px}
-.cr_bl h3{font-size:13px;font-weight:700;margin-bottom:12px}
-.cri{background:rgba(255,255,255,.04);border-radius:10px;padding:11px;text-align:center}
-.cri_l{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--m);margin-bottom:5px}
-.cri_v{font-size:16px;font-weight:700}
-.cri_s{font-size:10px;color:var(--m);margin-top:3px}
-.cr_note{font-size:11px;line-height:1.8;color:var(--m);border-top:1px solid var(--bd);padding-top:10px;margin-top:10px}
-.cr_note strong{color:var(--txt)}
-@media(max-width:768px){.page{padding:36px 20px}.cvr h1{font-size:44px}.cvr_meta{grid-template-columns:1fr;gap:12px}.g2,.g3,.g4,.vh{grid-template-columns:1fr}.vsd{display:none}}
-</style>
-</head>
-<body>
+<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>6526 DCF Slide Deck</title><style>*{box-sizing:border-box;margin:0;padding:0}
+:root{
+    --bg:#08080d;--bd:rgba(255,255,255,.08);--m:rgba(240,240,245,.45);
+    --g:#34d399;--o:#f59e0b;--r:#f87171;--b:#60a5fa;--accent:#c084fc;
+    --card:rgba(18,18,31,.92);--glass:rgba(255,255,255,.04);
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'PingFang TC','Microsoft JhengHei',-apple-system,sans-serif;background:var(--bg);color:#f0f0f5;font-size:16px;line-height:1.7}
 
-<div class="page cvr">
-  <div class="cvr_logo">&#x1F99C; 小蝦 GIGAAERO Life OS</div>
-  <h1>華碩 <span>2357</span></h1>
-  <div class="cvr_sub">完整七步分析報告</div>
-  <div class="cvr_meta">
-    <div><strong>577 元</strong>TWD 目前股價</div>
-  <div><strong>615 元</strong>目標價 (+6.6%)</div>
-  <div><strong>HOLD</strong>評等（偏低評價）</div>
-  </div>
-  <div class="cvr_pages">
-    <span class="tag">○ Source 來源</span>
-    <span class="tag">○ DCF 折現</span>
-    <span class="tag">○ Comps 可比</span>
-    <span class="tag">○ Earnings 盈餘</span>
-    <span class="tag">○ One-Pager 單頁</span>
-    <span class="tag">○ IC Memo 投委會</span>
-    <span class="tag">○ Client Review 客戶版</span>
-  </div>
-  <div class="div"></div>
-  <div style="font-size:13px;color:var(--m);margin-bottom:8px">涵蓋四種估值方法 &middot; FactSet 16 位分析師共識 &middot; DCF + Comps 交叉驗證</div>
-  <div class="cvr_ft">
-    <p>報告日期：2026年 3月 28日 &middot; 臺灣證券交易所</p>
-    <p>本報告由小蝦 GIGAAERO 🦜 自動生成</p>
-  </div>
-</div>
+/* ── Slide viewer ── */
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
+.slide{display:none;width:100%;max-width:1100px;min-height:600px;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:48px 52px;backdrop-filter:blur(20px);position:relative;animation:fadeIn .25s ease}
+.slide.active{display:flex;flex-direction:column;gap:20px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-<div class="page p2">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">❶</div>
-      <div><div class="ey">Step 01</div><h2>Source 來源分析</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
-    </div>
-    <div class="g2">
-      <div class="card">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);font-weight:700;margin-bottom:10px">📺 即時行情與財務數據</div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--m)">Yahoo Finance (yfinance)</span><strong style="color:var(--txt)">股價、P/E、FCF、財報</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:var(--m)">TWSE 資訊觀測站</span><strong style="color:var(--txt)">財報核實</strong></div>
-      </div>
-      <div class="card">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);font-weight:700;margin-bottom:10px">📊 分析師共識</div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--m)">CNYES 鉅亨網 (FactSet)</span><strong style="color:var(--txt)">EPS 共識：47.73元</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:var(--m)">Fintel.com.tw</span><strong style="color:var(--txt)">技嘉 EPS 參照</strong></div>
-      </div>
-      <div class="card">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);font-weight:700;margin-bottom:10px">🔍 即時新聞與產業動態</div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--m)">TechCrunch RSS</span><strong style="color:var(--txt)">AI 產業走勢</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:var(--m)">新聞共識彙整</span><strong style="color:var(--txt)">EPS 下修軌跡</strong></div>
-      </div>
-      <div class="card">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);font-weight:700;margin-bottom:10px">📁 本地知識庫</div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px"><span style="color:var(--m)">skills/financial-dcf</span><strong style="color:var(--txt)">DCF 方法論</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:12px"><span style="color:var(--m)">skills/financial-equity-research</span><strong style="color:var(--txt)">IC Memo 架構</strong></div>
-      </div>
-    </div>
-    <div class="sf">
-      <div class="fs"><div class="fi">📺</div><div class="fl">yfinance<br>即時行情</div></div>
-      <div class="fa">&rarr;</div>
-      <div class="fs"><div class="fi">📊</div><div class="fl">FactSet<br>分析師共識</div></div>
-      <div class="fa">&rarr;</div>
-      <div class="fs"><div class="fi">🔍</div><div class="fl">新聞動態<br>彙整</div></div>
-      <div class="fa">&rarr;</div>
-      <div class="fs"><div class="fi">📁</div><div class="fl">本地Skill<br>知識庫</div></div>
-      <div class="fa">&rarr;</div>
-      <div class="fs"><div class="fi">🧠</div><div class="fl">GIGAAERO<br>分析建模</div></div>
-      <div class="fa">&rarr;</div>
-      <div class="fs"><div class="fi">📋</div><div class="fl">七步完整<br>報告</div></div>
-    </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; 來源分析 &middot; 華碩 2357</span><span>Page 2 / 7</span></div>
-  </div>
-</div>
+/* ── Slide content ── */
+.slide-num{position:absolute;top:20px;right:28px;font-size:10px;color:var(--m);font-weight:600;letter-spacing:1px}
+.slide-tag{display:inline-block;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:var(--b);padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:8px}
+.slide-title{font-size:2.4rem;font-weight:900;letter-spacing:-.5px;line-height:1.2}
+.slide-subtitle{font-size:1rem;color:var(--m);margin-top:4px}
+.slide-divider{height:2px;background:linear-gradient(90deg,var(--b),var(--accent));border-radius:2px;margin:8px 0}
+.big-num{font-size:4rem;font-weight:900;color:var(--b);letter-spacing:-2px}
+.big-num.green{color:var(--g)}.big-num.red{color:var(--r)}.big-num.orange{color:var(--o)}
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+.val-card{background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center}
+.val-label{font-size:10px;color:var(--m);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+.val-price{font-size:2rem;font-weight:900}
+.val-change{font-size:.85rem;font-weight:700;margin-top:4px}
+.val-note{font-size:.75rem;color:var(--m);margin-top:4px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.pro-con{background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.pro-con-title{font-size:.8rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.pro-con-title.pos{color:var(--g)}.pro-con-title.neg{color:var(--r)}
+.pro-con ul{list-style:none;padding:0;margin:0}
+.pro-con li{padding:4px 0;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.04)}
+.pro-con li:last-child{border:none}
+.insight-box{background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(96,165,250,.08));border:1px solid rgba(192,132,252,.2);border-radius:14px;padding:20px;font-size:1.05rem;line-height:1.8}
+.verdict-card{background:rgba(248,113,113,.06);border:2px solid rgba(248,113,113,.3);border-radius:16px;padding:24px}
+.verdict-rating{font-size:2.2rem;font-weight:900;color:var(--r);letter-spacing:-1px}
+.verdict-note{font-size:.9rem;color:var(--m);margin-top:8px;line-height:1.7}
+.footer-note{text-align:center;font-size:.7rem;color:rgba(240,240,245,.2);margin-top:auto;padding-top:16px}
 
-<div class="page p3">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">❷</div>
-      <div><div class="ey">Step 02</div><h2>DCF 現金流折現估值</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
-    </div>
-    <div class="g4" style="margin-bottom:20px">
-      <div class="da"><div class="da_l">FCF 基期（2025）</div><div class="da_v">30.3<span style="font-size:12px">億</span></div><div class="da_s">TWD</div></div>
-      <div class="da"><div class="da_l">WACC</div><div class="da_v">9.0<span style="font-size:12px">%</span></div><div class="da_s">企業折現率</div></div>
-      <div class="da"><div class="da_l">FCF成長率</div><div class="da_v">8.0<span style="font-size:12px">%</span></div><div class="da_s">Base Case</div></div>
-      <div class="da"><div class="da_l">永續成長率</div><div class="da_v">2.0<span style="font-size:12px">%</span></div><div class="da_s">保守（&lt; WACC）</div></div>
-    </div>
-    <div class="card">
-      <table class="tbl">
-        <thead><tr><th>年度</th><th>FCF（億 TWD）</th><th>折現因子</th><th>現值（億）</th></tr></thead>
-        <tbody>
-          <tr><td>Year 1</td><td class="n">32.7</td><td class="n">0.9174</td><td class="n">30.0</td></tr>
-          <tr><td>Year 2</td><td class="n">35.3</td><td class="n">0.8417</td><td class="n">29.7</td></tr>
-          <tr><td>Year 3</td><td class="n">38.2</td><td class="n">0.7722</td><td class="n">29.5</td></tr>
-          <tr><td>Year 4</td><td class="n">41.2</td><td class="n">0.7084</td><td class="n">29.2</td></tr>
-          <tr><td>Year 5</td><td class="n">44.5</td><td class="n">0.6499</td><td class="n">28.9</td></tr>
-          <tr><td style="font-weight:700">預測期 PV 合計</td><td></td><td></td><td class="g n">~147 億</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <p><strong>終值計算：</strong>Year 5 FCF 44.5億 &times; (1 + 2%) / (9% - 2%) = <strong>~651億 TWD</strong> | 終值 PV（折現因子 0.6499）= <strong class="g">~423億</strong></p>
-      <p><strong>企業價值：</strong>預測期 PV 147億 + 終值 PV 423億 = <strong>~570億 TWD</strong> | 加回淨現金 58.3億 = <strong>~628億 TWD</strong> | 每股價值 &asymp; <strong class="g">~650元</strong></p>
-    </div>
-    <div class="sm_w">
-      <div class="sm_t">敏感性分析矩陣 — 股價價值（TWD）| WACC vs 永續成長率</div>
-      <table class="sm">
-        <thead><tr><th></th><th>g = 1%</th><th>g = 2%（Base）</th><th>g = 3%</th></tr></thead>
-        <tbody>
-          <tr><td>WACC 8%</td><td>590</td><td class="bc">650</td><td>720</td></tr>
-          <tr><td>WACC 9%（Base）</td><td>540</td><td class="bc">~628</td><td>680</td></tr>
-          <tr><td>WACC 10%</td><td>500</td><td class="bc">560</td><td>640</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <p><strong>觀察：</strong>對齊現價 577元，DCF 合理值區間 <strong>580 &ndash; 730元</strong>。永續成長率 <strong>必須 &lt; WACC</strong>，否則會計算出異常大的終端價值。</p>
-    </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; DCF 現金流折現估值 &middot; 華碩 2357</span><span>Page 3 / 7</span></div>
-  </div>
-</div>
+/* ── Progress bar ── */
+#progress{position:fixed;bottom:0;left:0;height:3px;background:var(--b);transition:width .3s ease;z-index:200}
 
-<div class="page p4">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">❸</div>
-      <div><div class="ey">Step 03</div><h2>Comps 可比公司分析</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
-    </div>
-    <div class="vh">
-      <div class="vs">
-        <div class="vs_n">華碩</div>
-        <div class="vs_t">2357 TT</div>
-        <div class="vm"><span class="vm_l">股價</span><span class="vm_v">577元</span></div>
-        <div class="vm"><span class="vm_l">市值（億）</span><span class="vm_v">4,285億</span></div>
-        <div class="vm"><span class="vm_l">P/E（2026E）</span><span class="vm_v g">12.1x</span></div>
-        <div class="vm"><span class="vm_l">P/B</span><span class="vm_v g">1.6x</span></div>
-        <div class="vm"><span class="vm_l">毛利率</span><span class="vm_v g">15.1%</span></div>
-        <div class="vm"><span class="vm_l">淨利率</span><span class="vm_v g">6.0%</span></div>
-        <div class="vm"><span class="vm_l">EPS YoY（共識）</span><span class="vm_v r">-19.7%</span></div>
-        <div class="vm"><span class="vm_l">FCF（億）</span><span class="vm_v g">30.3億</span></div>
-        <div class="vm"><span class="vm_l">淨現金</span><span class="vm_v g">+58.3億</span></div>
-      </div>
-      <div class="vsd">&#9876;&#65039;</div>
-      <div class="vs vs_win">
-        <div class="vs_n">技嘉</div>
-        <div class="vs_t">2376 TT</div>
-        <div class="vm"><span class="vm_l">股價</span><span class="vm_v">235元</span></div>
-        <div class="vm"><span class="vm_l">市值（億）</span><span class="vm_v">157億</span></div>
-        <div class="vm"><span class="vm_l">P/E（2026E）</span><span class="vm_v">13.7x</span></div>
-        <div class="vm"><span class="vm_l">P/B</span><span class="vm_v">2.7x</span></div>
-        <div class="vm"><span class="vm_l">毛利率</span><span class="vm_v">10.4%</span></div>
-        <div class="vm"><span class="vm_l">淨利率</span><span class="vm_v">3.6%</span></div>
-        <div class="vm"><span class="vm_l">EPS YoY（共識）</span><span class="vm_v g">+29.5%</span></div>
-        <div class="vm"><span class="vm_l">FCF（億）</span><span class="vm_v">5.1億</span></div>
-        <div class="vm"><span class="vm_l">淨現金</span><span class="vm_v r">-3.4億</span></div>
-      </div>
-    </div>
-    <div class="card">
-      <p><strong>對比分析：</strong>華碩在毛利率（15.1%）與淨現金水位上表現顯著優於同業技嘉，展現其品牌溢價與營運韌性，但在 2026 年 EPS 成長預期上因高基期而承壓。</p>
-    </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; Comps 可比公司分析 &middot; 華碩 2357</span><span>Page 4 / 7</span></div>
-  </div>
-</div>
+/* ── Toolbar ── */
+#toolbar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(8,8,13,.88);border:1px solid var(--bd);border-radius:12px;padding:6px 16px;display:flex;gap:16px;align-items:center;font-size:.75rem;color:var(--m);z-index:300;opacity:0;transition:opacity .3s}
+body:hover #toolbar{opacity:1}
+.toolbar-key{background:var(--glass);border:1px solid var(--bd);border-radius:4px;padding:2px 6px;font-size:.7rem;color:#fff}
 
-<div class="page p5">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">⑤</div>
-      <div><div class="ey">Step 04</div><h2>Earnings 盈餘追蹤</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
-    </div>
-    <div class="g4" style="margin-bottom:20px">
-      <div class="eh"><div class="eh_l">EPS 2025實際</div><div class="eh_v g">59.49</div><div class="eh_s">歷史新高</div></div>
-      <div class="eh"><div class="eh_l">EPS 2026共識</div><div class="eh_v">47.73</div><div class="eh_s">FactSet 16位</div></div>
-      <div class="eh"><div class="eh_l">YoY 變動</div><div class="eh_v r">-19.7%</div><div class="eh_s">PC 庫存調整</div></div>
-      <div class="eh"><div class="eh_l">目標價空間</div><div class="eh_v">+6.6%</div><div class="eh_s">到 615元</div></div>
-    </div>
-    <div class="card">
-      <p><strong>FactSet EPS 共識下修軌跡（2026年）</strong></p>
-      <table class="tbl">
-        <thead><tr><th>日期</th><th>共識 EPS</th><th>變動</th><th>分析師人數</th></tr></thead>
-        <tbody>
-          <tr><td>2026-01-07</td><td class="n">54.73元</td><td class="g">上修</td><td>-</td></tr>
-          <tr><td>2026-03-11</td><td class="n">48.43元</td><td class="r">下修</td><td>10位</td></tr>
-          <tr><td>2026-03-13</td><td class="n">47.73元</td><td class="r">下修</td><td>16位</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="g2">
-      <div class="card">
-        <p><strong>營收趨勢</strong></p>
-        <table class="tbl">
-          <thead><tr><th>年度</th><th>營收（億）</th><th>YoY</th></tr></thead>
-          <tbody>
-            <tr><td>2024</td><td class="n">587.1</td><td class="g">+21.7%</td></tr>
-            <tr><td>2025</td><td class="n">738.9</td><td class="g">+25.9%</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card">
-        <p><strong>關鍵觀察：</strong>2025年繳出歷史最佳成績單（EPS 59.49元）。主因AI PC滲透與板卡景氣回升。</p>
-        <p><strong>2026年需觀察：</strong>PC進入庫存調整期，AI伺服器事業營收能否放量成第二曲線是核心催化劑。</p>
-      </div>
-    </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; Earnings &middot; 華碩 2357</span><span>Page 5 / 7</span></div>
-  </div>
-</div>
+/* ── Overview grid (Esc) ── */
+#overview{position:fixed;inset:0;background:rgba(8,8,13,.97);z-index:400;display:none;padding:40px;overflow:auto}
+#overview.show{display:block}
+#overview h2{font-size:.8rem;font-weight:700;color:var(--m);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;text-align:center}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.overview-item{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer;font-size:.75rem;transition:border-color .2s,background .2s}
+.overview-item:hover,.overview-item.active{border-color:var(--b);background:rgba(96,165,250,.08)}
+.overview-item .ov-title{font-weight:700;color:#fff;margin-bottom:4px;font-size:.85rem}
+.overview-item .ov-sub{color:var(--m)}
 
-<div class="page p6">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">⑥</div>
-      <div><div class="ey">Step 05</div><h2>One-Pager 單頁概覽</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
+/* ── Presenter mode (P) ── */
+#presenter{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;padding:30px;gap:20px}
+#presenter.show{display:grid;grid-template-columns:1fr 280px;align-items:start}
+#presenter-main{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:32px;min-height:70vh;display:flex;flex-direction:column}
+#presenter-main .slide{position:static;display:flex;animation:none;border:none;border-radius:0;min-height:0;padding:0;background:transparent}
+#presenter-sidebar{display:flex;flex-direction:column;gap:12px}
+#presenter-timer{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px;text-align:center}
+#timer-display{font-size:2.5rem;font-weight:900;color:var(--b);font-variant-numeric:tabular-nums}
+#timer-controls{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.tbtn{background:var(--glass);border:1px solid var(--bd);color:#fff;border-radius:6px;padding:4px 10px;font-size:.75rem;cursor:pointer}
+#presenter-notes{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px;flex:1;font-size:.8rem;color:var(--m);line-height:1.7;overflow:auto;max-height:50vh}
+#presenter-next{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px}
+#presenter-next .slide{position:static;display:flex;animation:none;border:none;border-radius:0;min-height:0;padding:0;background:transparent;font-size:.7rem;transform:scale(.7);transform-origin:top left;width:150%}
+.ov-label{font-size:.65rem;color:var(--m);letter-spacing:.5px;text-transform:uppercase}</style></head><body><div id="deck"><div class="slide active" data-idx="0"><span class="slide-num">1/5</span><span class="slide-tag">COVER</span><h1 class="slide-title">6526 達發科技</h1><div class="slide-subtitle">Airoha Technology Corp. | TWSE | 2026-04-01</div>
+    <div class="big-num green" style="font-size:5rem;margin-top:16px">483.5<span style="font-size:1.5rem;color:var(--m)"> TWD</span></div>
+    <div style="margin-top:12px;font-size:1.1rem;color:var(--m)">市值 81.0B NTD · 流通股 167.5M · 淨現金 +19.3B</div>
+    <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
+        <span style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4);color:var(--g);padding:6px 14px;border-radius:20px;font-weight:700;font-size:.9rem">BUY</span>
+        <span style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:var(--b);padding:6px 14px;border-radius:20px;font-size:.9rem">藍牙音頻晶片</span>
+        <span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--o);padding:6px 14px;border-radius:20px;font-size:.9rem">AI Server</span>
     </div>
-    <div class="op_h">
-      <div>
-        <div class="op_c">華碩 (ASUS)</div>
-        <div class="op_t">2357 TT · 臺灣證券交易所</div>
-        <div class="op_r"> HOLD — 偏低評價</div>
-      </div>
-      <div class="op_rt">
-        <div class="op_pr">577</div>
-        <div style="font-size:12px;color:var(--m)">TWD · 2026-03-28</div>
-      </div>
+    <div class="footer-note">📊 DCF Valuation Report · 2026-04-01 · GIGAAERO 🦞</div></div><div class="slide" data-idx="1"><span class="slide-num">2/5</span><span class="slide-tag">KEY METRICS</span><h1 class="slide-title">關鍵數據</h1><div class="slide-subtitle">TWSE OpenAPI Q4 FY2025 + yfinance 即時報價</div>
+    <div class="val-grid">
+        <div class="val-card"><div class="val-label">股價</div><div class="val-price">483.5</div><div class="val-note">TWD</div></div>
+        <div class="val-card"><div class="val-label">P/E（Forward）</div><div class="val-price" style="color:var(--g)">17.2x</div><div class="val-note">市場共識</div></div>
+        <div class="val-card"><div class="val-label">P/E（TTM）</div><div class="val-price" style="color:var(--o)">27.9x</div><div class="val-note">落後期</div></div>
+        <div class="val-card"><div class="val-label">P/B</div><div class="val-price">4.19x</div><div class="val-note">BVPS 115.5</div></div>
+        <div class="val-card"><div class="val-label">EPS Forward</div><div class="val-price" style="color:var(--g)">28.04</div><div class="val-note">+62% YoY</div></div>
+        <div class="val-card"><div class="val-label">EPS TTM</div><div class="val-price">17.31</div><div class="val-note">Q4 單季</div></div>
+        <div class="val-card"><div class="val-label">毛利率</div><div class="val-price" style="color:var(--g)">51.9%</div><div class="val-note">半導體設計</div></div>
+        <div class="val-card"><div class="val-label">淨利率</div><div class="val-price">13.5%</div><div class="val-note">Q4</div></div>
+        <div class="val-card"><div class="val-label">淨現金</div><div class="val-price" style="color:var(--g)">+19.3B</div><div class="val-note">零長期負債</div></div>
     </div>
-    <div class="g4" style="margin-bottom:20px">
-      <div class="ok"><div class="ok_v">15.1%</div><div class="ok_l">毛利率</div></div>
-      <div class="ok"><div class="ok_v g">6.0%</div><div class="ok_l">淨利率</div></div>
-      <div class="ok"><div class="ok_v">9.7x</div><div class="ok_l">P/E歷史</div></div>
-      <div class="ok"><div class="ok_v o">12.1x</div><div class="ok_l">P/E共識</div></div>
-      <div class="ok"><div class="ok_v g">59.49</div><div class="ok_l">EPS 2025</div></div>
-      <div class="ok"><div class="ok_v">47.73</div><div class="ok_l">EPS 2026E</div></div>
-      <div class="ok"><div class="ok_v g">+58.3</div><div class="ok_l">淨現金億</div></div>
-      <div class="ok"><div class="ok_v g">30.3</div><div class="ok_l">FCF 2025億</div></div>
+    </div><div class="slide" data-idx="2"><span class="slide-num">3/5</span><span class="slide-tag">VALUATION</span><h1 class="slide-title">估值情景</h1><div class="slide-subtitle">P/E 相對估值 · EPS Forward 28.04 NTD</div>
+    <div class="val-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="val-card" style="border-color:rgba(248,113,113,.35)">
+            <div class="val-label" style="color:var(--r)">BEAR 熊市</div>
+            <div class="val-price red">463</div>
+            <div class="val-change" style="color:var(--r)">-4.2%</div>
+            <div class="val-note">EPS 21.0 × 22x</div>
+            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">藍牙音頻需求放緩，成熟產品價格競爭激烈，營收 YoY 降至 5%</div>
+        </div>
+        <div class="val-card" style="border-color:rgba(52,211,153,.4)">
+            <div class="val-label" style="color:var(--g)">BASE 基準 ★</div>
+            <div class="val-price green">785</div>
+            <div class="val-change" style="color:var(--g)">+62.4%</div>
+            <div class="val-note">EPS 28.0 × 28x</div>
+            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">TWS 耳機持續滲透 + Wi-Fi 6/6E 晶片量產，營收 YoY 維持 20%+</div>
+        </div>
+        <div class="val-card" style="border-color:rgba(245,158,11,.35)">
+            <div class="val-label" style="color:var(--o)">BULL 多頭</div>
+            <div class="val-price orange">1,276</div>
+            <div class="val-change" style="color:var(--o)">+163.9%</div>
+            <div class="val-note">EPS 36.5 × 35x</div>
+            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">AIoT 爆發 + Wi-Fi 7 率先量產，品牌 TWS 旗艦款全數採用達發方案</div>
+        </div>
     </div>
-    <div class="g2">
-      <div class="card">
-        <p><strong>投資論點（AI PC轉型期）</strong></p>
-        <ul class="bl">
-          <li><strong>品牌定價權確立：</strong>毛利率15.1%碾壓同業，主機板全球市佔第一。</li>
-          <li><strong>AI PC換機潮接力：</strong>Snapdragon X系列滲透企業換機，Zenbook/ROG新品矩陣完整。</li>
-          <li><strong>財務體質穩健：</strong>淨現金58.3億、FCF 30.3億，P/B 1.6x十年區間下緣。</li>
-        </ul>
-      </div>
-      <div class="card">
-        <p><strong>估值觀測（目標615元）</strong></p>
-        <ul class="bl">
-          <li><strong>FactSet目標價（16位分析師）</strong>615元 → <span class="g">+6.6%</span></li>
-          <li><strong>DCF內在價值（Base Case）</strong>~650元</li>
-          <li><strong>進場策略：</strong>500元以下加碼至戰術倉位；目標615元為區間操作基準。</li>
-        </ul>
-      </div>
+    <div class="footer-note">註：Forward P/E 17.2x，PEG 0.28（成長率/PE = 62%/17.2 ≈ 0.28）低於 1.0 合理門檻</div></div><div class="slide" data-idx="3"><span class="slide-num">4/5</span><span class="slide-tag">CATALYST</span><h1 class="slide-title">多空因素</h1>
+    <div class="two-col">
+        <div class="pro-con">
+            <div class="pro-con-title pos">✓ 利多因素</div>
+            <ul>
+                <li>🌐 <b>藍牙 LE Audio</b> — TWS 耳機全球滲透率尚低，東南亞/新興市場起飛</li>
+                <li>📶 <b>Wi-Fi 6/6E</b> — 已量產，Wi-Fi 7 先發優勢確立</li>
+                <li>🏭 <b>聯發科家族</b> — 持股 24%，資源整合 + 客戶通路共享</li>
+                <li>💰 <b>淨現金 19.3B</b> — 零負債，併購擴張能力極強</li>
+                <li>📈 <b>Forward EPS +62%</b> — 市場共識強勁成長</li>
+            </ul>
+        </div>
+        <div class="pro-con">
+            <div class="pro-con-title neg">✗ 利空因素</div>
+            <ul>
+                <li>⚔️ <b>Qualcomm / Realtek</b> — 國際大廠價格戰加劇</li>
+                <li>📉 <b>Q4 營收 YoY +2.4%</b> — 低於市場預期，供應鏈庫存調整中</li>
+                <li>🏭 <b>CapEx 擴張</b> — Wi-Fi 7 研發燒錢，FCF 短期承壓</li>
+                <li>🍎 <b>蘋果自製晶片</b> — 潛在長期威脅</li>
+            </ul>
+        </div>
     </div>
-    <div class="card">
-      <p><strong>風險因素：</strong>（1）PC庫存逆風 （2）AI伺服器能見度不足 （3）中國品牌競爭 （4）FX匯率波動。</p>
+    </div><div class="slide" data-idx="4"><span class="slide-num">5/5</span><span class="slide-tag">VERDICT</span><h1 class="slide-title">裁決 Verdict</h1>
+    <div class="two-col" style="align-items:stretch">
+        <div class="verdict-card">
+            <div class="verdict-rating">BUY</div>
+            <div class="verdict-note">
+                <b>P/E Forward 17.2x</b>，結合 62% EPS 成長預期，PEG 比僅 0.28——遠低於 1.0 的合理門檻。<br><br>
+                全球前三藍牙音頻晶片設計公司（聯發科家族），在半導體設計業務 + 物聯網 Wi-Fi 滲透加速的背景下，當前股價被嚴重低估。<br><br>
+                <b>淨現金 19.3B</b> 提供強大的併購與填補利潤能力，股價安全邊際充足。
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+            <div class="val-card" style="text-align:left">
+                <div class="val-label">現價</div>
+                <div class="val-price" style="font-size:1.6rem">483.5</div>
+                <div style="font-size:.8rem;color:var(--m);margin-top:4px">TWD</div>
+            </div>
+            <div class="val-card" style="text-align:left;border-color:rgba(52,211,153,.3)">
+                <div class="val-label" style="color:var(--g)">BASE 目標價</div>
+                <div class="val-price green" style="font-size:1.6rem">785</div>
+                <div style="font-size:.8rem;color:var(--g);margin-top:4px">+62% · 11x PEG</div>
+            </div>
+            <div class="val-card" style="text-align:left">
+                <div class="val-label">止損位</div>
+                <div class="val-price" style="font-size:1.4rem;color:var(--r)">400</div>
+                <div style="font-size:.8rem;color:var(--m);margin-top:4px">P/E 14x 過度悲觀價</div>
+            </div>
+            <div class="val-card" style="text-align:left">
+                <div class="val-label">切入區間</div>
+                <div class="val-price" style="font-size:1.4rem;color:var(--o)">460↓</div>
+                <div style="font-size:.8rem;color:var(--m);margin-top:4px">突破 510 確認趨勢後加倉</div>
+            </div>
+        </div>
     </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; One-Pager &middot; 華碩 2357</span><span>Page 6 / 7</span></div>
-  </div>
-</div>
+    <div class="footer-note">6526 達發 Airoha · Equity Research · 2026-04-01 · GIGAAERO 🦞</div></div></div><div id="progress" style="width:20%"></div><div id="slide-counter" style="position:fixed;top:16px;right:24px;font-size:.75rem;color:var(--m);font-weight:600;z-index:100">1 / 5</div><div id="toolbar"><span><span class="toolbar-key">← →</span> 切換</span><span><span class="toolbar-key">Esc</span> 總覽</span><span><span class="toolbar-key">P</span> 簡報者模式</span><span><span class="toolbar-key">F</span> 全螢幕</span></div><div id="overview"><h2>Slide Overview · 按一下跳至該頁</h2><div class="overview-grid"><div class="overview-item active" data-idx="0"><div class="ov-label">COVER</div><div class="ov-title">6526 達發科技</div><div class="ov-sub">Airoha Technology Corp. | TWSE | 2026-04-01</div></div><div class="overview-item" data-idx="1"><div class="ov-label">KEY METRICS</div><div class="ov-title">關鍵數據</div><div class="ov-sub">TWSE OpenAPI Q4 FY2025 + yfinance 即時報價</div></div><div class="overview-item" data-idx="2"><div class="ov-label">VALUATION</div><div class="ov-title">估值情景</div><div class="ov-sub">P/E 相對估值 · EPS Forward 28.04 NTD</div></div><div class="overview-item" data-idx="3"><div class="ov-label">CATALYST</div><div class="ov-title">多空因素</div><div class="ov-sub"></div></div><div class="overview-item" data-idx="4"><div class="ov-label">VERDICT</div><div class="ov-title">裁決 Verdict</div><div class="ov-sub"></div></div></div></div><div id="presenter"><div id="presenter-main"></div><div id="presenter-sidebar"><div id="presenter-timer"><div class="ov-label">計時器</div><div id="timer-display">00:00</div><div id="timer-controls"><button class=tbtn onclick="timerSeconds=0;updateTimerDisplay()">Reset</button></div></div><div id="presenter-notes">按 P 返回</div><div id="presenter-next"><div class="ov-label">下一頁預覽</div><div class="slide" style="display:flex"></div></div></div></div><script>
+let current=0;
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let timerSeconds=0;
+let timerInterval=null;
+let presenterOpen=false;
 
-<div class="page p7">
-  <div class="container">
-    <div class="ph">
-      <div class="pn">⑦</div>
-      <div><div class="ey">Step 06 &amp; 07</div><h2>IC Memo &amp; Client Review</h2></div>
-      <div class="ph_rt"><span class="tk">2357 TT</span></div>
-    </div>
-    <div class="ic_bl">
-      <div class="ic_cf"> Investment Committee Memo — INTERNAL</div>
-      <h2>華碩 (2357 TT)</h2>
-      <div class="ic_sub">AI PC轉型期中的價值與逆風並存</div>
-      <div class="ic_meta">
-        <span><strong>覆蓋日期：</strong>2026-03-28</span>
-        <span><strong>分析師：</strong>小蝦 GIGAAERO</span>
-        <span><strong>評等：</strong>HOLD（偏低評價）</span>
-        <span><strong>目標價：</strong>615元（+6.6%）</span>
-      </div>
-    </div>
-    <div class="vrd">
-      <h3>龍蝦裁示</h3>
-      <div class="vi"><strong>評等：</strong>HOLD（偏低評價）<span class="tg tg_o">HOLD</span></div>
-      <div class="vi"><strong>合理價值區間：</strong>580至650元。現價577元接近DCF下限，長線投資者可分批建立倉位。</div>
-      <div class="vi"><strong>進場策略：</strong>500元以下視為絕佳戰術性買點；577元適合長線倉位建立。<span class="tg tg_g">長線佈局</span></div>
-      <div class="vi"><strong>催化劑：</strong>COMPUTEX 2026（6月）、Q2季報（8月）、AI伺服器營收放量公告。<span class="tg tg_o">催化劑追蹤</span></div>
-      <div class="vi"><strong>持有邏輯：</strong>淨現金58.3億+P/B 1.6x+品牌定價權=577元具備長線資本保護。適合養老金式持有。<span class="tg tg_g">價值型</span></div>
-    </div>
-    <div class="cr_bl">
-      <h3>Client Review — 可交付客戶版報告</h3>
-      <div class="g3">
-        <div class="cri"><div class="cri_l">投資評等</div><div class="cri_v o">HOLD</div><div class="cri_s">偏低評價</div></div>
-        <div class="cri"><div class="cri_l">目標價</div><div class="cri_v g">615元</div><div class="cri_s">+6.6% 上漲空間</div></div>
-        <div class="cri"><div class="cri_l">進場策略</div><div class="cri_v">500元以下加碼</div><div class="cri_s">長線分批佈局</div></div>
-      </div>
-      <div class="cr_note">
-        <strong>核心邏輯：</strong>華碩577元具備三重支撐——淨現金58.3億+P/B 1.6x十年低+品牌定價權。2026年盈餘下修壓力已在P/E中反映，長線投資者可分批建立倉位。<br><br>
-        <strong>催化劑追蹤：</strong>COMPUTEX 2026（6月）、Q2季報（8月）、AI伺服器營收放量公告。
-      </div>
-    </div>
-    <div class="card" style="margin-top:16px;font-size:11px;line-height:1.8">
-      <strong>免責聲明：</strong>本報告由小蝦 GIGAAERO自動生成，僅供授權客戶內部參考，不構成任何投資建議或要約。過往表現不代表未來結果。投資前請諮詢專業顧問。
-    </div>
-    <div class="pf"><span>&#x1F99C; 小蝦 GIGAAERO &middot; IC Memo + Client Review &middot; 華碩 2357</span><span>Page 7 / 7</span></div>
-  </div>
-</div>
+function show(n){
+    current = n; // 已修正：加入狀態同步邏輯
+    slides.forEach((s,i)=>s.classList.toggle('active',i===n));
+    document.getElementById('progress').style.width=((n+1)/total*100)+'%';
+    document.getElementById('slide-counter').textContent=(n+1)+' / '+total;
+    updateOverview(n);
+}
+function prev(){show(Math.max(0,current-1));}
+function next(){show(Math.min(total-1,current+1));}
 
-</body>
-</html>
+document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}
+    else if(e.key==='ArrowLeft'||e.key==='Backspace'){e.preventDefault();prev();}
+    else if(e.key==='Escape'){toggleOverview();}
+    else if(e.key==='p'||e.key==='P'){togglePresenter();}
+    else if(e.key==='f'||e.key==='F'){toggleFS();}
+});
+document.getElementById('overview').addEventListener('click',e=>{
+    const item=e.target.closest('.overview-item');
+    if(item){show(parseInt(item.dataset.idx));document.getElementById('overview').classList.remove('show');}
+});
+function toggleOverview(){document.getElementById('overview').classList.toggle('show');}
+function togglePresenter(){
+    presenterOpen=!presenterOpen;
+    document.getElementById('presenter').classList.toggle('show',presenterOpen);
+    if(presenterOpen){startTimer();renderPresenterNotes();}
+}
+function toggleFS(){
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+}
+function startTimer(){
+    if(timerInterval)return;
+    timerInterval=setInterval(()=>{timerSeconds++;updateTimerDisplay();},1000);
+}
+function updateTimerDisplay(){
+    const m=Math.floor(timerSeconds/60).toString().padStart(2,'0');
+    const s=(timerSeconds%60).toString().padStart(2,'0');
+    document.getElementById('timer-display').textContent=m+':'+s;
+}
+function renderPresenterNotes(){
+    const notes=['Cover — 6526 達發 Airoha Technology','Agenda — 數據 / 估值 / 風險 / 結論','Current Price 483.5 TWD — P/E Fwd 17.2x — BUY','TWSE API Q4 data — Revenue 20.9B, GM 51.9%, NM 13.5%','Valuation scenarios — BEAR 463 / BASE 785 / BULL 1276','Risks — competition, supply chain, customer concentration','Verdict — BUY, target 785 TWD, net cash 19.3B'];
+    const n=Math.min(current,notes.length-1);
+    document.getElementById('presenter-notes').textContent=notes[n]||'';
+}
+function updateOverview(idx){
+    document.querySelectorAll('.overview-item').forEach((el,i)=>el.classList.toggle('active',parseInt(el.dataset.idx)===idx));
+}
+
+// Init
+show(0);
+</script></body></html>
