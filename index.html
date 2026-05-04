@@ -1,232 +1,222 @@
-<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>6526 DCF Slide Deck</title><style>*{box-sizing:border-box;margin:0;padding:0}
-:root{
-    --bg:#08080d;--bd:rgba(255,255,255,.08);--m:rgba(240,240,245,.45);
-    --g:#34d399;--o:#f59e0b;--r:#f87171;--b:#60a5fa;--accent:#c084fc;
-    --card:rgba(18,18,31,.92);--glass:rgba(255,255,255,.04);
-}
-html,body{height:100%;overflow:hidden}
-body{font-family:'PingFang TC','Microsoft JhengHei',-apple-system,sans-serif;background:var(--bg);color:#f0f0f5;font-size:16px;line-height:1.7}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00992A 投資組合儀表板</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh;padding:24px}
+  h1{font-size:22px;font-weight:600;color:#fff;margin-bottom:4px}
+  .subtitle{font-size:13px;color:#64748b;margin-bottom:24px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .mc{background:#1a1f2e;border:1px solid #1e293b;border-radius:12px;padding:16px}
+  .mc-label{font-size:11px;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+  .mc-value{font-size:24px;font-weight:600;color:#fff}
+  .mc-sub{font-size:11px;color:#475569;margin-top:3px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .card{background:#1a1f2e;border:1px solid #1e293b;border-radius:12px;padding:20px}
+  .card-title{font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:12px}
+  .li{display:flex;align-items:center;gap:5px;font-size:11px;color:#94a3b8}
+  .ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  thead th{font-size:11px;color:#64748b;font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid #1e293b}
+  thead th:not(:first-child){text-align:right}
+  tbody td{padding:8px 10px;color:#cbd5e1;border-bottom:1px solid #0f1117}
+  tbody td:not(:first-child){text-align:right}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#1e293b}
+  .tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500}
+  .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500}
+  .bar-bg{background:#0f1117;border-radius:2px;height:6px;overflow:hidden;width:80px}
+  .bar-fill{height:100%;border-radius:2px}
+</style>
+</head>
+<body>
+<h1>00992A 主動群益科技創新</h1>
+<p class="subtitle">投資組合分析儀表板 · 資料日期：2026年4月30日 · 總持股 48 檔</p>
 
-/* ── Slide viewer ── */
-#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
-.slide{display:none;width:100%;max-width:1100px;min-height:600px;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:48px 52px;backdrop-filter:blur(20px);position:relative;animation:fadeIn .25s ease}
-.slide.active{display:flex;flex-direction:column;gap:20px}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+<div class="metrics">
+  <div class="mc">
+    <p class="mc-label">前10大佔比</p>
+    <p class="mc-value">39.6%</p>
+    <p class="mc-sub">vs 00981A 56.2%（更分散）</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">最大單一持股</p>
+    <p class="mc-value">7.56%</p>
+    <p class="mc-sub">台積電 2330</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">2026年迄今績效</p>
+    <p class="mc-value" style="color:#34d399">+42.95%</p>
+    <p class="mc-sub">主動ETF排名 #1</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">AUM 規模</p>
+    <p class="mc-value">497億</p>
+    <p class="mc-sub">vs 00981A 2,389億</p>
+  </div>
+</div>
 
-/* ── Slide content ── */
-.slide-num{position:absolute;top:20px;right:28px;font-size:10px;color:var(--m);font-weight:600;letter-spacing:1px}
-.slide-tag{display:inline-block;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.25);color:var(--b);padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:8px}
-.slide-title{font-size:2.4rem;font-weight:900;letter-spacing:-.5px;line-height:1.2}
-.slide-subtitle{font-size:1rem;color:var(--m);margin-top:4px}
-.slide-divider{height:2px;background:linear-gradient(90deg,var(--b),var(--accent));border-radius:2px;margin:8px 0}
-.big-num{font-size:4rem;font-weight:900;color:var(--b);letter-spacing:-2px}
-.big-num.green{color:var(--g)}.big-num.red{color:var(--r)}.big-num.orange{color:var(--o)}
-.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
-.val-card{background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:16px;text-align:center}
-.val-label{font-size:10px;color:var(--m);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
-.val-price{font-size:2rem;font-weight:900}
-.val-change{font-size:.85rem;font-weight:700;margin-top:4px}
-.val-note{font-size:.75rem;color:var(--m);margin-top:4px}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
-.pro-con{background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:16px}
-.pro-con-title{font-size:.8rem;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
-.pro-con-title.pos{color:var(--g)}.pro-con-title.neg{color:var(--r)}
-.pro-con ul{list-style:none;padding:0;margin:0}
-.pro-con li{padding:4px 0;font-size:.9rem;border-bottom:1px solid rgba(255,255,255,.04)}
-.pro-con li:last-child{border:none}
-.insight-box{background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(96,165,250,.08));border:1px solid rgba(192,132,252,.2);border-radius:14px;padding:20px;font-size:1.05rem;line-height:1.8}
-.verdict-card{background:rgba(248,113,113,.06);border:2px solid rgba(248,113,113,.3);border-radius:16px;padding:24px}
-.verdict-rating{font-size:2.2rem;font-weight:900;color:var(--r);letter-spacing:-1px}
-.verdict-note{font-size:.9rem;color:var(--m);margin-top:8px;line-height:1.7}
-.footer-note{text-align:center;font-size:.7rem;color:rgba(240,240,245,.2);margin-top:auto;padding-top:16px}
-
-/* ── Progress bar ── */
-#progress{position:fixed;bottom:0;left:0;height:3px;background:var(--b);transition:width .3s ease;z-index:200}
-
-/* ── Toolbar ── */
-#toolbar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(8,8,13,.88);border:1px solid var(--bd);border-radius:12px;padding:6px 16px;display:flex;gap:16px;align-items:center;font-size:.75rem;color:var(--m);z-index:300;opacity:0;transition:opacity .3s}
-body:hover #toolbar{opacity:1}
-.toolbar-key{background:var(--glass);border:1px solid var(--bd);border-radius:4px;padding:2px 6px;font-size:.7rem;color:#fff}
-
-/* ── Overview grid (Esc) ── */
-#overview{position:fixed;inset:0;background:rgba(8,8,13,.97);z-index:400;display:none;padding:40px;overflow:auto}
-#overview.show{display:block}
-#overview h2{font-size:.8rem;font-weight:700;color:var(--m);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px;text-align:center}
-.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
-.overview-item{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer;font-size:.75rem;transition:border-color .2s,background .2s}
-.overview-item:hover,.overview-item.active{border-color:var(--b);background:rgba(96,165,250,.08)}
-.overview-item .ov-title{font-weight:700;color:#fff;margin-bottom:4px;font-size:.85rem}
-.overview-item .ov-sub{color:var(--m)}
-
-/* ── Presenter mode (P) ── */
-#presenter{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;padding:30px;gap:20px}
-#presenter.show{display:grid;grid-template-columns:1fr 280px;align-items:start}
-#presenter-main{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:32px;min-height:70vh;display:flex;flex-direction:column}
-#presenter-main .slide{position:static;display:flex;animation:none;border:none;border-radius:0;min-height:0;padding:0;background:transparent}
-#presenter-sidebar{display:flex;flex-direction:column;gap:12px}
-#presenter-timer{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px;text-align:center}
-#timer-display{font-size:2.5rem;font-weight:900;color:var(--b);font-variant-numeric:tabular-nums}
-#timer-controls{display:flex;gap:8px;justify-content:center;margin-top:8px}
-.tbtn{background:var(--glass);border:1px solid var(--bd);color:#fff;border-radius:6px;padding:4px 10px;font-size:.75rem;cursor:pointer}
-#presenter-notes{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px;flex:1;font-size:.8rem;color:var(--m);line-height:1.7;overflow:auto;max-height:50vh}
-#presenter-next{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px}
-#presenter-next .slide{position:static;display:flex;animation:none;border:none;border-radius:0;min-height:0;padding:0;background:transparent;font-size:.7rem;transform:scale(.7);transform-origin:top left;width:150%}
-.ov-label{font-size:.65rem;color:var(--m);letter-spacing:.5px;text-transform:uppercase}</style></head><body><div id="deck"><div class="slide active" data-idx="0"><span class="slide-num">1/5</span><span class="slide-tag">COVER</span><h1 class="slide-title">6526 達發科技</h1><div class="slide-subtitle">Airoha Technology Corp. | TWSE | 2026-04-01</div>
-    <div class="big-num green" style="font-size:5rem;margin-top:16px">483.5<span style="font-size:1.5rem;color:var(--m)"> TWD</span></div>
-    <div style="margin-top:12px;font-size:1.1rem;color:var(--m)">市值 81.0B NTD · 流通股 167.5M · 淨現金 +19.3B</div>
-    <div style="margin-top:24px;display:flex;gap:10px;flex-wrap:wrap">
-        <span style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4);color:var(--g);padding:6px 14px;border-radius:20px;font-weight:700;font-size:.9rem">BUY</span>
-        <span style="background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3);color:var(--b);padding:6px 14px;border-radius:20px;font-size:.9rem">藍牙音頻晶片</span>
-        <span style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--o);padding:6px 14px;border-radius:20px;font-size:.9rem">AI Server</span>
+<div class="row2">
+  <div class="card">
+    <p class="card-title">前10大持股權重</p>
+    <div style="position:relative;height:300px">
+      <canvas id="barChart" role="img" aria-label="前10大持股橫條圖"></canvas>
     </div>
-    <div class="footer-note">📊 DCF Valuation Report · 2026-04-01 · GIGAAERO 🦞</div></div><div class="slide" data-idx="1"><span class="slide-num">2/5</span><span class="slide-tag">KEY METRICS</span><h1 class="slide-title">關鍵數據</h1><div class="slide-subtitle">TWSE OpenAPI Q4 FY2025 + yfinance 即時報價</div>
-    <div class="val-grid">
-        <div class="val-card"><div class="val-label">股價</div><div class="val-price">483.5</div><div class="val-note">TWD</div></div>
-        <div class="val-card"><div class="val-label">P/E（Forward）</div><div class="val-price" style="color:var(--g)">17.2x</div><div class="val-note">市場共識</div></div>
-        <div class="val-card"><div class="val-label">P/E（TTM）</div><div class="val-price" style="color:var(--o)">27.9x</div><div class="val-note">落後期</div></div>
-        <div class="val-card"><div class="val-label">P/B</div><div class="val-price">4.19x</div><div class="val-note">BVPS 115.5</div></div>
-        <div class="val-card"><div class="val-label">EPS Forward</div><div class="val-price" style="color:var(--g)">28.04</div><div class="val-note">+62% YoY</div></div>
-        <div class="val-card"><div class="val-label">EPS TTM</div><div class="val-price">17.31</div><div class="val-note">Q4 單季</div></div>
-        <div class="val-card"><div class="val-label">毛利率</div><div class="val-price" style="color:var(--g)">51.9%</div><div class="val-note">半導體設計</div></div>
-        <div class="val-card"><div class="val-label">淨利率</div><div class="val-price">13.5%</div><div class="val-note">Q4</div></div>
-        <div class="val-card"><div class="val-label">淨現金</div><div class="val-price" style="color:var(--g)">+19.3B</div><div class="val-note">零長期負債</div></div>
+  </div>
+  <div class="card">
+    <p class="card-title">產業分布</p>
+    <div class="legend" id="sLegend"></div>
+    <div style="position:relative;height:250px">
+      <canvas id="pieChart" role="img" aria-label="產業分布圓餅圖"></canvas>
     </div>
-    </div><div class="slide" data-idx="2"><span class="slide-num">3/5</span><span class="slide-tag">VALUATION</span><h1 class="slide-title">估值情景</h1><div class="slide-subtitle">P/E 相對估值 · EPS Forward 28.04 NTD</div>
-    <div class="val-grid" style="grid-template-columns:repeat(3,1fr)">
-        <div class="val-card" style="border-color:rgba(248,113,113,.35)">
-            <div class="val-label" style="color:var(--r)">BEAR 熊市</div>
-            <div class="val-price red">463</div>
-            <div class="val-change" style="color:var(--r)">-4.2%</div>
-            <div class="val-note">EPS 21.0 × 22x</div>
-            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">藍牙音頻需求放緩，成熟產品價格競爭激烈，營收 YoY 降至 5%</div>
-        </div>
-        <div class="val-card" style="border-color:rgba(52,211,153,.4)">
-            <div class="val-label" style="color:var(--g)">BASE 基準 ★</div>
-            <div class="val-price green">785</div>
-            <div class="val-change" style="color:var(--g)">+62.4%</div>
-            <div class="val-note">EPS 28.0 × 28x</div>
-            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">TWS 耳機持續滲透 + Wi-Fi 6/6E 晶片量產，營收 YoY 維持 20%+</div>
-        </div>
-        <div class="val-card" style="border-color:rgba(245,158,11,.35)">
-            <div class="val-label" style="color:var(--o)">BULL 多頭</div>
-            <div class="val-price orange">1,276</div>
-            <div class="val-change" style="color:var(--o)">+163.9%</div>
-            <div class="val-note">EPS 36.5 × 35x</div>
-            <div style="margin-top:12px;font-size:.8rem;color:var(--m);text-align:left">AIoT 爆發 + Wi-Fi 7 率先量產，品牌 TWS 旗艦款全數採用達發方案</div>
-        </div>
-    </div>
-    <div class="footer-note">註：Forward P/E 17.2x，PEG 0.28（成長率/PE = 62%/17.2 ≈ 0.28）低於 1.0 合理門檻</div></div><div class="slide" data-idx="3"><span class="slide-num">4/5</span><span class="slide-tag">CATALYST</span><h1 class="slide-title">多空因素</h1>
-    <div class="two-col">
-        <div class="pro-con">
-            <div class="pro-con-title pos">✓ 利多因素</div>
-            <ul>
-                <li>🌐 <b>藍牙 LE Audio</b> — TWS 耳機全球滲透率尚低，東南亞/新興市場起飛</li>
-                <li>📶 <b>Wi-Fi 6/6E</b> — 已量產，Wi-Fi 7 先發優勢確立</li>
-                <li>🏭 <b>聯發科家族</b> — 持股 24%，資源整合 + 客戶通路共享</li>
-                <li>💰 <b>淨現金 19.3B</b> — 零負債，併購擴張能力極強</li>
-                <li>📈 <b>Forward EPS +62%</b> — 市場共識強勁成長</li>
-            </ul>
-        </div>
-        <div class="pro-con">
-            <div class="pro-con-title neg">✗ 利空因素</div>
-            <ul>
-                <li>⚔️ <b>Qualcomm / Realtek</b> — 國際大廠價格戰加劇</li>
-                <li>📉 <b>Q4 營收 YoY +2.4%</b> — 低於市場預期，供應鏈庫存調整中</li>
-                <li>🏭 <b>CapEx 擴張</b> — Wi-Fi 7 研發燒錢，FCF 短期承壓</li>
-                <li>🍎 <b>蘋果自製晶片</b> — 潛在長期威脅</li>
-            </ul>
-        </div>
-    </div>
-    </div><div class="slide" data-idx="4"><span class="slide-num">5/5</span><span class="slide-tag">VERDICT</span><h1 class="slide-title">裁決 Verdict</h1>
-    <div class="two-col" style="align-items:stretch">
-        <div class="verdict-card">
-            <div class="verdict-rating">BUY</div>
-            <div class="verdict-note">
-                <b>P/E Forward 17.2x</b>，結合 62% EPS 成長預期，PEG 比僅 0.28——遠低於 1.0 的合理門檻。<br><br>
-                全球前三藍牙音頻晶片設計公司（聯發科家族），在半導體設計業務 + 物聯網 Wi-Fi 滲透加速的背景下，當前股價被嚴重低估。<br><br>
-                <b>淨現金 19.3B</b> 提供強大的併購與填補利潤能力，股價安全邊際充足。
-            </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px">
-            <div class="val-card" style="text-align:left">
-                <div class="val-label">現價</div>
-                <div class="val-price" style="font-size:1.6rem">483.5</div>
-                <div style="font-size:.8rem;color:var(--m);margin-top:4px">TWD</div>
-            </div>
-            <div class="val-card" style="text-align:left;border-color:rgba(52,211,153,.3)">
-                <div class="val-label" style="color:var(--g)">BASE 目標價</div>
-                <div class="val-price green" style="font-size:1.6rem">785</div>
-                <div style="font-size:.8rem;color:var(--g);margin-top:4px">+62% · 11x PEG</div>
-            </div>
-            <div class="val-card" style="text-align:left">
-                <div class="val-label">止損位</div>
-                <div class="val-price" style="font-size:1.4rem;color:var(--r)">400</div>
-                <div style="font-size:.8rem;color:var(--m);margin-top:4px">P/E 14x 過度悲觀價</div>
-            </div>
-            <div class="val-card" style="text-align:left">
-                <div class="val-label">切入區間</div>
-                <div class="val-price" style="font-size:1.4rem;color:var(--o)">460↓</div>
-                <div style="font-size:.8rem;color:var(--m);margin-top:4px">突破 510 確認趨勢後加倉</div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-note">6526 達發 Airoha · Equity Research · 2026-04-01 · GIGAAERO 🦞</div></div></div><div id="progress" style="width:20%"></div><div id="slide-counter" style="position:fixed;top:16px;right:24px;font-size:.75rem;color:var(--m);font-weight:600;z-index:100">1 / 5</div><div id="toolbar"><span><span class="toolbar-key">← →</span> 切換</span><span><span class="toolbar-key">Esc</span> 總覽</span><span><span class="toolbar-key">P</span> 簡報者模式</span><span><span class="toolbar-key">F</span> 全螢幕</span></div><div id="overview"><h2>Slide Overview · 按一下跳至該頁</h2><div class="overview-grid"><div class="overview-item active" data-idx="0"><div class="ov-label">COVER</div><div class="ov-title">6526 達發科技</div><div class="ov-sub">Airoha Technology Corp. | TWSE | 2026-04-01</div></div><div class="overview-item" data-idx="1"><div class="ov-label">KEY METRICS</div><div class="ov-title">關鍵數據</div><div class="ov-sub">TWSE OpenAPI Q4 FY2025 + yfinance 即時報價</div></div><div class="overview-item" data-idx="2"><div class="ov-label">VALUATION</div><div class="ov-title">估值情景</div><div class="ov-sub">P/E 相對估值 · EPS Forward 28.04 NTD</div></div><div class="overview-item" data-idx="3"><div class="ov-label">CATALYST</div><div class="ov-title">多空因素</div><div class="ov-sub"></div></div><div class="overview-item" data-idx="4"><div class="ov-label">VERDICT</div><div class="ov-title">裁決 Verdict</div><div class="ov-sub"></div></div></div></div><div id="presenter"><div id="presenter-main"></div><div id="presenter-sidebar"><div id="presenter-timer"><div class="ov-label">計時器</div><div id="timer-display">00:00</div><div id="timer-controls"><button class=tbtn onclick="timerSeconds=0;updateTimerDisplay()">Reset</button></div></div><div id="presenter-notes">按 P 返回</div><div id="presenter-next"><div class="ov-label">下一頁預覽</div><div class="slide" style="display:flex"></div></div></div></div><script>
-let current=0;
-const slides=document.querySelectorAll('.slide');
-const total=slides.length;
-let timerSeconds=0;
-let timerInterval=null;
-let presenterOpen=false;
+  </div>
+</div>
 
-function show(n){
-    current = n; // 已修正：加入狀態同步邏輯
-    slides.forEach((s,i)=>s.classList.toggle('active',i===n));
-    document.getElementById('progress').style.width=((n+1)/total*100)+'%';
-    document.getElementById('slide-counter').textContent=(n+1)+' / '+total;
-    updateOverview(n);
-}
-function prev(){show(Math.max(0,current-1));}
-function next(){show(Math.min(total-1,current+1));}
+<div class="card" style="margin-bottom:16px">
+  <p class="card-title">持股集中度對比：00992A vs 00981A（前20大累積）</p>
+  <div style="position:relative;height:200px">
+    <canvas id="concChart" role="img" aria-label="持股集中度累積折線圖"></canvas>
+  </div>
+  <div class="legend" style="margin-top:12px">
+    <span class="li"><span class="ld" style="background:#34d399"></span>00992A 群益科技創新（分散）</span>
+    <span class="li"><span class="ld" style="background:#60a5fa"></span>00981A 統一台股增長（集中）</span>
+  </div>
+</div>
 
-document.addEventListener('keydown',e=>{
-    if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}
-    else if(e.key==='ArrowLeft'||e.key==='Backspace'){e.preventDefault();prev();}
-    else if(e.key==='Escape'){toggleOverview();}
-    else if(e.key==='p'||e.key==='P'){togglePresenter();}
-    else if(e.key==='f'||e.key==='F'){toggleFS();}
+<div class="card">
+  <p class="card-title">前10大持股明細（含與 00981A 持股差異）</p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>代碼</th><th>公司</th><th>產業</th>
+        <th>比例</th><th>收盤價</th><th style="text-align:center">vs 00981A</th>
+        <th style="text-align:left;padding-left:10px">權重條</th>
+      </tr>
+    </thead>
+    <tbody id="hBody"></tbody>
+  </table>
+</div>
+
+<script>
+const top10 = [
+  {rank:1,code:'2330',name:'台積電',sector:'半導體',w:7.56,p:2135,color:'#60a5fa',in981:8.97},
+  {rank:2,code:'2383',name:'台光電',sector:'PCB/基板',w:4.91,p:4545,color:'#34d399',in981:8.42},
+  {rank:3,code:'6669',name:'緯穎',sector:'網通/伺服器',w:4.37,p:4675,color:'#a78bfa',in981:3.43},
+  {rank:4,code:'8996',name:'高力',sector:'散熱/連接',w:4.24,p:1250,color:'#fb923c',in981:0.48},
+  {rank:5,code:'3037',name:'欣興',sector:'PCB/基板',w:4.09,p:883,color:'#34d399',in981:3.78},
+  {rank:6,code:'3665',name:'貿聯-KY',sector:'散熱/連接',w:3.71,p:2770,color:'#fb923c',in981:5.31},
+  {rank:7,code:'3105',name:'穩懋',sector:'半導體',w:3.70,p:536,color:'#60a5fa',in981:0},
+  {rank:8,code:'3017',name:'奇鋐',sector:'散熱/連接',w:3.42,p:2835,color:'#fb923c',in981:4.63},
+  {rank:9,code:'6442',name:'光聖',sector:'測試/設備',w:3.33,p:2110,color:'#fbbf24',in981:0},
+  {rank:10,code:'2345',name:'智邦',sector:'網通/伺服器',w:3.28,p:2280,color:'#a78bfa',in981:5.75},
+];
+
+const sectorColors = {
+  '半導體':'#60a5fa','PCB/基板':'#34d399','散熱/連接':'#fb923c',
+  '網通/伺服器':'#a78bfa','IC設計':'#f87171','測試/設備':'#fbbf24','其他':'#64748b'
+};
+const sectorW = {
+  '半導體':7.56+3.70+2.86+2.72+2.02+1.49+0.94+0.39+0.30+0.16+0.05,
+  'PCB/基板':4.91+4.09+2.24+1.87+1.29+0.52+0.48+0.31,
+  '散熱/連接':4.24+3.71+3.42+2.13+2.08+1.55+0.35,
+  '網通/伺服器':4.37+3.28+2.46+1.82+0.91+0.34,
+  'IC設計':2.23+1.44+0.94+0.90,
+  '測試/設備':3.33+2.92+2.12+0.30,
+  '其他':3.15+2.03+1.93+1.89+1.42+1.42+1.19+0.36+0.16
+};
+
+const tcMap = {
+  '半導體':{bg:'#1e3a5f',c:'#93c5fd'},
+  'PCB/基板':{bg:'#064e3b',c:'#6ee7b7'},
+  '散熱/連接':{bg:'#431407',c:'#fdba74'},
+  '網通/伺服器':{bg:'#2e1065',c:'#c4b5fd'},
+  'IC設計':{bg:'#450a0a',c:'#fca5a5'},
+  '測試/設備':{bg:'#451a03',c:'#fcd34d'},
+  '其他':{bg:'#1e293b',c:'#94a3b8'},
+};
+
+const tbody = document.getElementById('hBody');
+top10.forEach(h => {
+  const tc = tcMap[h.sector]||{bg:'#1e293b',c:'#94a3b8'};
+  let diff;
+  if(h.in981===0) diff=`<span class="badge" style="background:#052e16;color:#86efac">獨有</span>`;
+  else if(h.w>h.in981) diff=`<span class="badge" style="background:#052e16;color:#86efac">+${(h.w-h.in981).toFixed(2)}%</span>`;
+  else diff=`<span class="badge" style="background:#450a0a;color:#fca5a5">${(h.w-h.in981).toFixed(2)}%</span>`;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:#475569">#${h.rank}</td>
+    <td style="font-family:monospace;font-size:11px;color:#94a3b8">${h.code}</td>
+    <td style="font-weight:600;color:#e2e8f0">${h.name}</td>
+    <td><span class="tag" style="background:${tc.bg};color:${tc.c}">${h.sector}</span></td>
+    <td style="font-weight:500;color:#fff">${h.w.toFixed(2)}%</td>
+    <td>${h.p.toLocaleString()}</td>
+    <td style="text-align:center">${diff}</td>
+    <td style="padding-left:10px">
+      <div class="bar-bg"><div class="bar-fill" style="width:${(h.w/8*100).toFixed(0)}%;background:${h.color}"></div></div>
+    </td>`;
+  tbody.appendChild(tr);
 });
-document.getElementById('overview').addEventListener('click',e=>{
-    const item=e.target.closest('.overview-item');
-    if(item){show(parseInt(item.dataset.idx));document.getElementById('overview').classList.remove('show');}
-});
-function toggleOverview(){document.getElementById('overview').classList.toggle('show');}
-function togglePresenter(){
-    presenterOpen=!presenterOpen;
-    document.getElementById('presenter').classList.toggle('show',presenterOpen);
-    if(presenterOpen){startTimer();renderPresenterNotes();}
-}
-function toggleFS(){
-    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
-    else document.exitFullscreen();
-}
-function startTimer(){
-    if(timerInterval)return;
-    timerInterval=setInterval(()=>{timerSeconds++;updateTimerDisplay();},1000);
-}
-function updateTimerDisplay(){
-    const m=Math.floor(timerSeconds/60).toString().padStart(2,'0');
-    const s=(timerSeconds%60).toString().padStart(2,'0');
-    document.getElementById('timer-display').textContent=m+':'+s;
-}
-function renderPresenterNotes(){
-    const notes=['Cover — 6526 達發 Airoha Technology','Agenda — 數據 / 估值 / 風險 / 結論','Current Price 483.5 TWD — P/E Fwd 17.2x — BUY','TWSE API Q4 data — Revenue 20.9B, GM 51.9%, NM 13.5%','Valuation scenarios — BEAR 463 / BASE 785 / BULL 1276','Risks — competition, supply chain, customer concentration','Verdict — BUY, target 785 TWD, net cash 19.3B'];
-    const n=Math.min(current,notes.length-1);
-    document.getElementById('presenter-notes').textContent=notes[n]||'';
-}
-function updateOverview(idx){
-    document.querySelectorAll('.overview-item').forEach((el,i)=>el.classList.toggle('active',parseInt(el.dataset.idx)===idx));
-}
 
-// Init
-show(0);
-</script></body></html>
+const leg = document.getElementById('sLegend');
+Object.entries(sectorW).forEach(([s,w])=>{
+  const el=document.createElement('span');
+  el.className='li';
+  el.innerHTML=`<span class="ld" style="background:${sectorColors[s]}"></span>${s} ${w.toFixed(1)}%`;
+  leg.appendChild(el);
+});
+
+const chartDefaults = {responsive:true,maintainAspectRatio:false};
+
+new Chart(document.getElementById('barChart'),{
+  type:'bar',
+  data:{
+    labels:top10.map(h=>h.name),
+    datasets:[{label:'持股比例',data:top10.map(h=>h.w),backgroundColor:top10.map(h=>h.color+'cc'),borderWidth:0,borderRadius:4}]
+  },
+  options:{...chartDefaults,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x.toFixed(2)}%`}}},
+    scales:{
+      x:{ticks:{callback:v=>v+'%',font:{size:11},color:'#64748b'},grid:{color:'rgba(255,255,255,0.05)'}},
+      y:{ticks:{font:{size:11},color:'#94a3b8'},grid:{display:false}}
+    }
+  }
+});
+
+new Chart(document.getElementById('pieChart'),{
+  type:'doughnut',
+  data:{
+    labels:Object.keys(sectorW),
+    datasets:[{data:Object.values(sectorW).map(v=>parseFloat(v.toFixed(1))),backgroundColor:Object.keys(sectorW).map(s=>sectorColors[s]+'cc'),borderWidth:2,borderColor:'#1a1f2e'}]
+  },
+  options:{...chartDefaults,cutout:'55%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed.toFixed(1)}%`}}}
+  }
+});
+
+const cum992=[7.56,12.47,16.84,21.08,25.17,28.88,32.58,36.00,39.33,42.61,45.46,47.92,50.30,52.52,54.46,56.16,57.84,59.39,60.93,62.32];
+const cum981=[8.97,17.39,23.14,28.60,33.92,39.23,44.33,49.12,53.89,58.52,62.41,66.19,69.62,72.78,75.78,78.20,79.91,81.52,83.13,84.71];
+new Chart(document.getElementById('concChart'),{
+  type:'line',
+  data:{
+    labels:Array.from({length:20},(_,i)=>`#${i+1}`),
+    datasets:[
+      {label:'00992A',data:cum992,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,0.08)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#34d399',borderWidth:2},
+      {label:'00981A',data:cum981,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.05)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#60a5fa',borderWidth:2,borderDash:[5,4]}
+    ]
+  },
+  options:{...chartDefaults,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label} 累積 ${ctx.parsed.y.toFixed(2)}%`}}},
+    scales:{
+      y:{min:0,max:100,ticks:{callback:v=>v+'%',font:{size:11},color:'#64748b'},grid:{color:'rgba(255,255,255,0.05)'}},
+      x:{ticks:{font:{size:11},color:'#64748b'},grid:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>
