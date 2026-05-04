@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00992A 投資組合儀表板</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh;padding:24px}
+  h1{font-size:22px;font-weight:600;color:#fff;margin-bottom:4px}
+  .subtitle{font-size:13px;color:#64748b;margin-bottom:24px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .mc{background:#1a1f2e;border:1px solid #1e293b;border-radius:12px;padding:16px}
+  .mc-label{font-size:11px;color:#64748b;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em}
+  .mc-value{font-size:24px;font-weight:600;color:#fff}
+  .mc-sub{font-size:11px;color:#475569;margin-top:3px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .card{background:#1a1f2e;border:1px solid #1e293b;border-radius:12px;padding:20px}
+  .card-title{font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:12px}
+  .li{display:flex;align-items:center;gap:5px;font-size:11px;color:#94a3b8}
+  .ld{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  thead th{font-size:11px;color:#64748b;font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid #1e293b}
+  thead th:not(:first-child){text-align:right}
+  tbody td{padding:8px 10px;color:#cbd5e1;border-bottom:1px solid #0f1117}
+  tbody td:not(:first-child){text-align:right}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#1e293b}
+  .tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500}
+  .badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;font-weight:500}
+  .bar-bg{background:#0f1117;border-radius:2px;height:6px;overflow:hidden;width:80px}
+  .bar-fill{height:100%;border-radius:2px}
+</style>
+</head>
+<body>
+<h1>00992A 主動群益科技創新</h1>
+<p class="subtitle">投資組合分析儀表板 · 資料日期：2026年4月30日 · 總持股 48 檔</p>
+
+<div class="metrics">
+  <div class="mc">
+    <p class="mc-label">前10大佔比</p>
+    <p class="mc-value">39.6%</p>
+    <p class="mc-sub">vs 00981A 56.2%（更分散）</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">最大單一持股</p>
+    <p class="mc-value">7.56%</p>
+    <p class="mc-sub">台積電 2330</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">2026年迄今績效</p>
+    <p class="mc-value" style="color:#34d399">+42.95%</p>
+    <p class="mc-sub">主動ETF排名 #1</p>
+  </div>
+  <div class="mc">
+    <p class="mc-label">AUM 規模</p>
+    <p class="mc-value">497億</p>
+    <p class="mc-sub">vs 00981A 2,389億</p>
+  </div>
+</div>
+
+<div class="row2">
+  <div class="card">
+    <p class="card-title">前10大持股權重</p>
+    <div style="position:relative;height:300px">
+      <canvas id="barChart" role="img" aria-label="前10大持股橫條圖"></canvas>
+    </div>
+  </div>
+  <div class="card">
+    <p class="card-title">產業分布</p>
+    <div class="legend" id="sLegend"></div>
+    <div style="position:relative;height:250px">
+      <canvas id="pieChart" role="img" aria-label="產業分布圓餅圖"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:16px">
+  <p class="card-title">持股集中度對比：00992A vs 00981A（前20大累積）</p>
+  <div style="position:relative;height:200px">
+    <canvas id="concChart" role="img" aria-label="持股集中度累積折線圖"></canvas>
+  </div>
+  <div class="legend" style="margin-top:12px">
+    <span class="li"><span class="ld" style="background:#34d399"></span>00992A 群益科技創新（分散）</span>
+    <span class="li"><span class="ld" style="background:#60a5fa"></span>00981A 統一台股增長（集中）</span>
+  </div>
+</div>
+
+<div class="card">
+  <p class="card-title">前10大持股明細（含與 00981A 持股差異）</p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>代碼</th><th>公司</th><th>產業</th>
+        <th>比例</th><th>收盤價</th><th style="text-align:center">vs 00981A</th>
+        <th style="text-align:left;padding-left:10px">權重條</th>
+      </tr>
+    </thead>
+    <tbody id="hBody"></tbody>
+  </table>
+</div>
+
+<script>
+const top10 = [
+  {rank:1,code:'2330',name:'台積電',sector:'半導體',w:7.56,p:2135,color:'#60a5fa',in981:8.97},
+  {rank:2,code:'2383',name:'台光電',sector:'PCB/基板',w:4.91,p:4545,color:'#34d399',in981:8.42},
+  {rank:3,code:'6669',name:'緯穎',sector:'網通/伺服器',w:4.37,p:4675,color:'#a78bfa',in981:3.43},
+  {rank:4,code:'8996',name:'高力',sector:'散熱/連接',w:4.24,p:1250,color:'#fb923c',in981:0.48},
+  {rank:5,code:'3037',name:'欣興',sector:'PCB/基板',w:4.09,p:883,color:'#34d399',in981:3.78},
+  {rank:6,code:'3665',name:'貿聯-KY',sector:'散熱/連接',w:3.71,p:2770,color:'#fb923c',in981:5.31},
+  {rank:7,code:'3105',name:'穩懋',sector:'半導體',w:3.70,p:536,color:'#60a5fa',in981:0},
+  {rank:8,code:'3017',name:'奇鋐',sector:'散熱/連接',w:3.42,p:2835,color:'#fb923c',in981:4.63},
+  {rank:9,code:'6442',name:'光聖',sector:'測試/設備',w:3.33,p:2110,color:'#fbbf24',in981:0},
+  {rank:10,code:'2345',name:'智邦',sector:'網通/伺服器',w:3.28,p:2280,color:'#a78bfa',in981:5.75},
+];
+
+const sectorColors = {
+  '半導體':'#60a5fa','PCB/基板':'#34d399','散熱/連接':'#fb923c',
+  '網通/伺服器':'#a78bfa','IC設計':'#f87171','測試/設備':'#fbbf24','其他':'#64748b'
+};
+const sectorW = {
+  '半導體':7.56+3.70+2.86+2.72+2.02+1.49+0.94+0.39+0.30+0.16+0.05,
+  'PCB/基板':4.91+4.09+2.24+1.87+1.29+0.52+0.48+0.31,
+  '散熱/連接':4.24+3.71+3.42+2.13+2.08+1.55+0.35,
+  '網通/伺服器':4.37+3.28+2.46+1.82+0.91+0.34,
+  'IC設計':2.23+1.44+0.94+0.90,
+  '測試/設備':3.33+2.92+2.12+0.30,
+  '其他':3.15+2.03+1.93+1.89+1.42+1.42+1.19+0.36+0.16
+};
+
+const tcMap = {
+  '半導體':{bg:'#1e3a5f',c:'#93c5fd'},
+  'PCB/基板':{bg:'#064e3b',c:'#6ee7b7'},
+  '散熱/連接':{bg:'#431407',c:'#fdba74'},
+  '網通/伺服器':{bg:'#2e1065',c:'#c4b5fd'},
+  'IC設計':{bg:'#450a0a',c:'#fca5a5'},
+  '測試/設備':{bg:'#451a03',c:'#fcd34d'},
+  '其他':{bg:'#1e293b',c:'#94a3b8'},
+};
+
+const tbody = document.getElementById('hBody');
+top10.forEach(h => {
+  const tc = tcMap[h.sector]||{bg:'#1e293b',c:'#94a3b8'};
+  let diff;
+  if(h.in981===0) diff=`<span class="badge" style="background:#052e16;color:#86efac">獨有</span>`;
+  else if(h.w>h.in981) diff=`<span class="badge" style="background:#052e16;color:#86efac">+${(h.w-h.in981).toFixed(2)}%</span>`;
+  else diff=`<span class="badge" style="background:#450a0a;color:#fca5a5">${(h.w-h.in981).toFixed(2)}%</span>`;
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="color:#475569">#${h.rank}</td>
+    <td style="font-family:monospace;font-size:11px;color:#94a3b8">${h.code}</td>
+    <td style="font-weight:600;color:#e2e8f0">${h.name}</td>
+    <td><span class="tag" style="background:${tc.bg};color:${tc.c}">${h.sector}</span></td>
+    <td style="font-weight:500;color:#fff">${h.w.toFixed(2)}%</td>
+    <td>${h.p.toLocaleString()}</td>
+    <td style="text-align:center">${diff}</td>
+    <td style="padding-left:10px">
+      <div class="bar-bg"><div class="bar-fill" style="width:${(h.w/8*100).toFixed(0)}%;background:${h.color}"></div></div>
+    </td>`;
+  tbody.appendChild(tr);
+});
+
+const leg = document.getElementById('sLegend');
+Object.entries(sectorW).forEach(([s,w])=>{
+  const el=document.createElement('span');
+  el.className='li';
+  el.innerHTML=`<span class="ld" style="background:${sectorColors[s]}"></span>${s} ${w.toFixed(1)}%`;
+  leg.appendChild(el);
+});
+
+const chartDefaults = {responsive:true,maintainAspectRatio:false};
+
+new Chart(document.getElementById('barChart'),{
+  type:'bar',
+  data:{
+    labels:top10.map(h=>h.name),
+    datasets:[{label:'持股比例',data:top10.map(h=>h.w),backgroundColor:top10.map(h=>h.color+'cc'),borderWidth:0,borderRadius:4}]
+  },
+  options:{...chartDefaults,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x.toFixed(2)}%`}}},
+    scales:{
+      x:{ticks:{callback:v=>v+'%',font:{size:11},color:'#64748b'},grid:{color:'rgba(255,255,255,0.05)'}},
+      y:{ticks:{font:{size:11},color:'#94a3b8'},grid:{display:false}}
+    }
+  }
+});
+
+new Chart(document.getElementById('pieChart'),{
+  type:'doughnut',
+  data:{
+    labels:Object.keys(sectorW),
+    datasets:[{data:Object.values(sectorW).map(v=>parseFloat(v.toFixed(1))),backgroundColor:Object.keys(sectorW).map(s=>sectorColors[s]+'cc'),borderWidth:2,borderColor:'#1a1f2e'}]
+  },
+  options:{...chartDefaults,cutout:'55%',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${ctx.parsed.toFixed(1)}%`}}}
+  }
+});
+
+const cum992=[7.56,12.47,16.84,21.08,25.17,28.88,32.58,36.00,39.33,42.61,45.46,47.92,50.30,52.52,54.46,56.16,57.84,59.39,60.93,62.32];
+const cum981=[8.97,17.39,23.14,28.60,33.92,39.23,44.33,49.12,53.89,58.52,62.41,66.19,69.62,72.78,75.78,78.20,79.91,81.52,83.13,84.71];
+new Chart(document.getElementById('concChart'),{
+  type:'line',
+  data:{
+    labels:Array.from({length:20},(_,i)=>`#${i+1}`),
+    datasets:[
+      {label:'00992A',data:cum992,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,0.08)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#34d399',borderWidth:2},
+      {label:'00981A',data:cum981,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.05)',fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#60a5fa',borderWidth:2,borderDash:[5,4]}
+    ]
+  },
+  options:{...chartDefaults,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label} 累積 ${ctx.parsed.y.toFixed(2)}%`}}},
+    scales:{
+      y:{min:0,max:100,ticks:{callback:v=>v+'%',font:{size:11},color:'#64748b'},grid:{color:'rgba(255,255,255,0.05)'}},
+      x:{ticks:{font:{size:11},color:'#64748b'},grid:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>
